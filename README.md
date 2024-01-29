@@ -1,14 +1,14 @@
-### Loops Bug
-
-This is a minimally reproducible repository for the Loops SDK ESM bug.
+### General ESM workaround
 
 ```
 yarn install
-
+yarn transpile-loops
 yarn start:dev
 ```
 
-Running `yarn start:dev` should throw `Error [ERR_REQUIRE_ESM]: require() of ES Module`.
+Implications of this approach:
 
-Node Version: v20.10.0
-yarn: 1.22.21
+- I think you'll also need to add the `transpile-loops` command to your build steps.
+- the import statements are a bit wild now:
+  - to get the correct types, you can still import from the "loops" package: `import type LoopsClient from 'loops';` since the typescript lines are purged before the import can cause an issue.
+  - to get the correct runtime, you need to import from the folder creating by the `transpile-loops` command: `import LoopsEmailClient from 'node_modules/loops-cjs/dist'`
